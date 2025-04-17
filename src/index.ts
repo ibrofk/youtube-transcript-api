@@ -94,8 +94,13 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
-// Start the server
-// Explicitly convert the port to a number using Number()
-app.listen(Number(port), '0.0.0.0', () => {
-  console.log(`YouTube Transcript API server running on port ${port}`);
-});
+// Start the server only if not in a Vercel environment
+// Vercel provides its own server environment
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(Number(port), '0.0.0.0', () => {
+    console.log(`YouTube Transcript API server running on port ${port}`);
+  });
+}
+
+// Export the Express app instance for Vercel
+export default app;
